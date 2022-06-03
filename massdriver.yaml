@@ -1,66 +1,70 @@
-# This file will be used to generate all of the schema-*.json files in a bundle
 schema: draft-07
-name: "gcp-cloud-function-https"
-description: ""
-ref: github.com/YOUR_NAME_HERE/gcp-cloud-function-https
-access: "public"
-type: "bundle"
+name: gcp-cloud-function-https
+description: "GCP HTTPS Cloud Function"
+ref: github.com/massdriver-cloud/massdriver-bundles
+access: public
+type: bundle
 
 steps:
   - path: src
     provisioner: terraform
 
-# schema-params.json
-# JSON Schema sans-fields above
 params:
   examples:
-    - foo: US-West 2 VPC
-    - foo: US-East 1 VPC
+    - __name: NodeJS No Cold Start
+      cloud_function_configuration:
+        runtime: Node.js 16
+        minimum_instances: 1
   required:
-    - foo
+    - cloud_function_configuration
+    - subdomain
+    - cloud_dns_managed_zone
   properties:
-    foo:
+    cloud_function_configuration:
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
+    subdomain:
       type: string
-      title: Foo
-      description: Name of gcp-cloud-function-https
-      default: ""
-      examples:
-        - US-West 2 VPC
-        - US-East 1 VPC
+      title: Subdomain
+      minLength: 1
+      maxLength: 60
+      pattern: "^[a-z-*]+$"
+      message:
+        pattern: "Subdomain must be lowercase letters, numbers, or dashes"
+      description: Subdomain for the cloud function
+      default: api
+    cloud_dns_managed_zone:
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-dns-managed-zone.json
 
-# schema-connections.json
-# Named list of input connections (artifacts) (map[name]artifact)
 connections:
-  properties: {}
-  # required:
-  # - aws_authentication
-  # - network
-  # properties:
-  #   aws_authentication:
-  #     $ref: massdriver/aws-iam-role
-  #   network:
-  #     $ref: massdriver/aws-regional-cloud
+  required:
+    - subnetwork
+    - gcp_authentication
+  properties:
+    subnetwork:
+      $ref: massdriver/gcp-subnetwork
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
 
-# schema-artifacts.json
-# Named list of output artifacts  (map[name]artifact)
 artifacts:
-  properties: {}
-  # required:
-  #   - network
-  # properties:
-  #   network:
-  #     $ref: massdriver/aws-regional-cloud
+  required:
+    - cloud_function
+  properties:
+    cloud_function:
+      $ref: massdriver/gcp-cloud-function
 
-# schema-ui.json
-# List of form customizations for params-schema
 ui:
   ui:order:
+    - cloud_function_configuration
+    - subdomain
+    - cloud_dns_managed_zone
     - "*"
-  ## set top level ui:wiget
-  # secret_key:
-  #    ui:widget: "password"
-  ## Set key in an array of objects
-  # secrets:
-  #   items:
-  #     mdKeyId:
-  #       ui:widget: "hidden"
+  cloud_function_configuration:
+    ui:order:
+      - runtime
+      - entrypoint
+      - memory_mb
+      - minimum_instances
+      - maximum_instances
+  cloud_dns_managed_zone:
+    ui:order:
+      - name
