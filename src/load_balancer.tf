@@ -62,5 +62,3 @@ resource "google_compute_url_map" "main" {
     default_service = google_compute_backend_service.main.id
   }
 }
-
-
