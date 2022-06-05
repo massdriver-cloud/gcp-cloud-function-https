@@ -1,7 +1,7 @@
 locals {
   data_infrastructure = {
     function_url = google_cloudfunctions_function.main.https_trigger_url
-    grn          = google_cloudfunctions_function.main.id
+    name         = google_cloudfunctions_function.main.name
   }
   data_security = {
   }
