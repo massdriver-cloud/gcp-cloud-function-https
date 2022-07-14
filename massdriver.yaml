@@ -66,5 +66,5 @@ ui:
       - minimum_instances
       - maximum_instances
   cloud_dns_managed_zone:
-    ui:order:
-      - name
+    name:
+      ui:field: dnsZonesDropdown
