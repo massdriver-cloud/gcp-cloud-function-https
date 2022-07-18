@@ -68,3 +68,4 @@ ui:
   cloud_dns_managed_zone:
     name:
       ui:field: dnsZonesDropdown
+      cloud: gcp
