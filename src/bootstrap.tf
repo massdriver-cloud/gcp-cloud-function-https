@@ -5,9 +5,10 @@
 # and the users application code will be deployed via another means
 
 resource "google_storage_bucket" "main" {
-  name     = var.md_metadata.name_prefix
-  labels   = var.md_metadata.default_tags
-  location = local.gcp_region
+  name                        = var.md_metadata.name_prefix
+  labels                      = var.md_metadata.default_tags
+  location                    = local.gcp_region
+  uniform_bucket_level_access = true
 }
 
 data "archive_file" "appfiles" {

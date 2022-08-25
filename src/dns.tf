@@ -1,10 +1,13 @@
 locals {
   domain   = "${var.subdomain}.${data.google_dns_managed_zone.main.dns_name}"
   full_url = "https://${local.domain}"
+
+  zone      = var.cloud_dns_managed_zone.name
+  zone_name = length(split("/", local.zone)) > 1 ? split("/", local.zone)[3] : local.zone
 }
 
 data "google_dns_managed_zone" "main" {
-  name = var.cloud_dns_managed_zone.name
+  name = local.zone_name
   depends_on = [
     module.apis
   ]

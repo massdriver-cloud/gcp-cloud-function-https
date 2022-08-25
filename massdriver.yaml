@@ -5,10 +5,6 @@ ref: github.com/massdriver-cloud/massdriver-bundles
 access: public
 type: bundle
 
-steps:
-  - path: src
-    provisioner: terraform
-
 params:
   examples:
     - __name: NodeJS No Cold Start
@@ -68,3 +64,4 @@ ui:
   cloud_dns_managed_zone:
     name:
       ui:field: dnsZonesDropdown
+      cloud: gcp
