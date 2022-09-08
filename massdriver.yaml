@@ -1,7 +1,7 @@
 schema: draft-07
 name: gcp-cloud-function-https
 description: "GCP HTTPS Cloud Function"
-ref: github.com/massdriver-cloud/gcp-cloud-function-https
+source_url: github.com/massdriver-cloud/gcp-cloud-function-https
 access: public
 type: bundle
 
