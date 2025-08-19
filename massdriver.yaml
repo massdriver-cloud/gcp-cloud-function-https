@@ -3,7 +3,6 @@ name: gcp-cloud-function-https
 version: 1.0.0
 description: GCP HTTPS Cloud Function
 source_url: https://github.com/massdriver-cloud/gcp-cloud-function-https
-type: application
 params:
   examples:
   - __name: NodeJS No Cold Start
