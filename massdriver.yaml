@@ -1,23 +1,22 @@
 schema: draft-07
 name: gcp-cloud-function-https
-description: "GCP HTTPS Cloud Function"
-source_url: github.com/massdriver-cloud/gcp-cloud-function-https
-access: public
-type: bundle
-
+version: 1.0.0
+description: GCP HTTPS Cloud Function
+source_url: https://github.com/massdriver-cloud/gcp-cloud-function-https
+type: application
 params:
   examples:
-    - __name: NodeJS No Cold Start
-      cloud_function_configuration:
-        runtime: Node.js 16
-        minimum_instances: 1
+  - __name: NodeJS No Cold Start
+    cloud_function_configuration:
+      runtime: Node.js 16
+      minimum_instances: 1
   required:
-    - cloud_function_configuration
-    - subdomain
-    - cloud_dns_managed_zone
+  - cloud_function_configuration
+  - subdomain
+  - cloud_dns_managed_zone
   properties:
     cloud_function_configuration:
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
+      "$ref": https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
     subdomain:
       type: string
       title: Subdomain
@@ -25,43 +24,46 @@ params:
       maxLength: 60
       pattern: "^[a-z-*]+$"
       message:
-        pattern: "Subdomain must be lowercase letters, numbers, or dashes"
+        pattern: Subdomain must be lowercase letters, numbers, or dashes
       description: Subdomain for the cloud function
       default: api
     cloud_dns_managed_zone:
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-dns-managed-zone.json
-
+      "$ref": https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-dns-managed-zone.json
 connections:
   required:
-    - subnetwork
-    - gcp_authentication
+  - subnetwork
+  - gcp_authentication
   properties:
     subnetwork:
-      $ref: massdriver/gcp-subnetwork
+      "$ref": massdriver/gcp-subnetwork
     gcp_authentication:
-      $ref: massdriver/gcp-service-account
-
+      "$ref": massdriver/gcp-service-account
 artifacts:
   required:
-    - cloud_function
+  - cloud_function
   properties:
     cloud_function:
-      $ref: massdriver/gcp-cloud-function
-
+      "$ref": massdriver/gcp-cloud-function
 ui:
   ui:order:
-    - cloud_function_configuration
-    - subdomain
-    - cloud_dns_managed_zone
-    - "*"
+  - cloud_function_configuration
+  - subdomain
+  - cloud_dns_managed_zone
+  - "*"
   cloud_function_configuration:
     ui:order:
-      - runtime
-      - entrypoint
-      - memory_mb
-      - minimum_instances
-      - maximum_instances
+    - runtime
+    - entrypoint
+    - memory_mb
+    - minimum_instances
+    - maximum_instances
   cloud_dns_managed_zone:
     name:
       ui:field: dnsZonesDropdown
       cloud: gcp
+steps:
+- path: src
+  provisioner: opentofu
+  config:
+    checkov:
+      enable: true
