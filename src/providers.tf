@@ -26,17 +26,17 @@ terraform {
 
 locals {
   gcp_region     = var.subnetwork.specs.gcp.region
-  gcp_project_id = var.gcp_authentication.data.project_id
+  gcp_project_id = var.gcp_authentication.project_id
 }
 
 provider "google" {
   project     = local.gcp_project_id
-  credentials = jsonencode(var.gcp_authentication.data)
+  credentials = jsonencode(var.gcp_authentication)
   region      = local.gcp_region
 }
 
 provider "google-beta" {
   project     = local.gcp_project_id
-  credentials = jsonencode(var.gcp_authentication.data)
+  credentials = jsonencode(var.gcp_authentication)
   region      = local.gcp_region
 }
